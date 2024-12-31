@@ -24,6 +24,25 @@
         -ms-user-select: none;
         user-select: none;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
+      }
+      .button2 {
+        background-color: white;
+        border: 1px solid;
+        color: black;
+        padding: 90px 10px 90px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 18px;
+        margin: 6px 3px;
+        cursor: pointer;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
       } /* 
       img {  width: auto ;
         max-width: 100% ;
@@ -35,27 +54,43 @@
     <h1>ESP32-CAM Robot</h1>
     <table>
         <tr>
-            <td><button class="button" onmousedown="toggleCheckbox('forward');" ontouchstart="toggleCheckbox('forward');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');"><img src="Panah atas.png" width="57.5" height="85"></button></td>
+            <td><button class="button" onmousedown="toggleCheckbox('forward');" ontouchstart="toggleCheckbox('forward');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');"><img src="https://raw.githubusercontent.com/TimothyTanawi-231401079/ciptabot/refs/heads/main/Panah%20atas.png" width="57.5" height="85"></button></td>
             <td rowspan="2"><img src="" id="photo" ></td>
-            <td rowspan="2"><button class="button" onmousedown="toggleCheckbox('left');" ontouchstart="toggleCheckbox('left');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');"><img src="Panah kiri.png" width="85" height="57.5"></button></td>
-            <td rowspan="2"><button class="button" onmousedown="toggleCheckbox('right');" ontouchstart="toggleCheckbox('right');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');"><img src="Panah kanan.png" width="85" height="57.5"></button></td>
+            <td rowspan="2"><button class="button2" onmousedown="toggleCheckbox('left');" ontouchstart="toggleCheckbox('left');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');" ><img src="https://raw.githubusercontent.com/TimothyTanawi-231401079/ciptabot/refs/heads/main/Panah%20kiri.png" width="85" height="57.5"></button></td>
+            <td rowspan="2"><button class="button2" onmousedown="toggleCheckbox('right');" ontouchstart="toggleCheckbox('right');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');"><img src="https://raw.githubusercontent.com/TimothyTanawi-231401079/ciptabot/refs/heads/main/Panah%20kanan.png" width="85" height="57.5"></button></td>
         </tr>
         <tr>
-            <td><button class="button" onmousedown="toggleCheckbox('backward');" ontouchstart="toggleCheckbox('backward');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');"><img src="Panah bawah.png" width="57.5" height="85"></button></td>
+            <td><button class="button" onmousedown="toggleCheckbox('backward');" ontouchstart="toggleCheckbox('backward');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');"><img src="https://raw.githubusercontent.com/TimothyTanawi-231401079/ciptabot/refs/heads/main/Panah%20bawah.png" width="57.5" height="85"></button></td>
+        </tr>
+        <tr>
+          <td colspan="4"><button id="ledButton" class="button led-button" onclick="toggleLED();" style="border: 0; padding: 0;"><img src="https://raw.githubusercontent.com/TimothyTanawi-231401079/ciptabot/refs/heads/main/off.png" width="40" height="55"></button>
         </tr>
         <tr>
           <td colspan="4"><button class="button" onmousedown="toggleCheckbox('stop');" ontouchstart="toggleCheckbox('stop');">Stop</button></td>
         </tr>
+        
 </table>
-    <!-- <table>
-      <tr><td colspan="3" align="center"><button class="button" onmousedown="toggleCheckbox('forward');" ontouchstart="toggleCheckbox('forward');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');">Forward</button></td></tr>
-      <tr><td align="center"><button class="button" onmousedown="toggleCheckbox('left');" ontouchstart="toggleCheckbox('left');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');">Left</button></td><td align="center"><button class="button" onmousedown="toggleCheckbox('stop');" ontouchstart="toggleCheckbox('stop');">Stop</button></td><td align="center"><button class="button" onmousedown="toggleCheckbox('right');" ontouchstart="toggleCheckbox('right');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');">Right</button></td></tr>
-      <tr><td colspan="3" align="center"><button class="button" onmousedown="toggleCheckbox('backward');" ontouchstart="toggleCheckbox('backward');" onmouseup="toggleCheckbox('stop');" ontouchend="toggleCheckbox('stop');">Backward</button></td></tr>                   
-    </table> -->
    <script>
    function toggleCheckbox(x) {
      var xhr = new XMLHttpRequest();
      xhr.open("GET", "/action?go=" + x, true);
+     xhr.send();
+   }
+   function toggleLED() {
+     var xhr = new XMLHttpRequest();
+     xhr.open("GET", "/led", true);
+     xhr.onload = function() {
+       var ledButton = document.getElementById('ledButton');
+       if (this.responseText === 'on') {
+         ledButton.innerHTML = '<img src="https://raw.githubusercontent.com/TimothyTanawi-231401079/ciptabot/refs/heads/main/off.png" width="40" height="55">';
+         ledButton.classList.remove('led-button');
+         ledButton.classList.add('led-button-off');
+       } else {
+         ledButton.innerHTML = '<img src="https://raw.githubusercontent.com/TimothyTanawi-231401079/ciptabot/refs/heads/main/on.png" width="40" height="55">';
+         ledButton.classList.remove('led-button-off');
+         ledButton.classList.add('led-button');
+       }
+     };
      xhr.send();
    }
    window.onload = document.getElementById("photo").src = window.location.href.slice(0, -1) + ":81/stream";
